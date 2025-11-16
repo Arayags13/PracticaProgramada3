@@ -60,5 +60,16 @@ namespace PracticaProgramada3.Controllers
 
             return Ok(respuesta);
         }
+        [HttpDelete("{placa}")]
+        public async Task<IActionResult> EliminarVehiculo(string placa)
+        {
+            var respuesta = await _vehiculosServicio.EliminarVehiculo(placa);
+
+            if (respuesta.EsError)
+                return NotFound(respuesta);
+
+            return Ok(respuesta);
+        }
+
     }
 }

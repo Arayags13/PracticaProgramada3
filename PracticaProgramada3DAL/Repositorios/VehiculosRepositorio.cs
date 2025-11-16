@@ -49,5 +49,16 @@ namespace PracticaProgramada3.DAL.Repositorios
 
             return Task.FromResult(existente);
         }
+        public Task<bool> EliminarVehiculo(string placa)
+        {
+            var vehiculo = vehiculos
+                .FirstOrDefault(v => v.Placa.Equals(placa, StringComparison.OrdinalIgnoreCase));
+
+            if (vehiculo is null)
+                return Task.FromResult(false);
+
+            vehiculos.Remove(vehiculo);
+            return Task.FromResult(true);
+        }
     }
 }

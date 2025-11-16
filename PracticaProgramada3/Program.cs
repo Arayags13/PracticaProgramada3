@@ -11,7 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IVehiculosServicio, VehiculoServicio>();
+builder.Services.AddScoped<IVehiculosServicio, VehiculosServicio>();
 builder.Services.AddScoped<IVehiculosRepositorio, VehiculosRepositorio>();
 
 builder.Services.AddAutoMapper(cfg => { }, typeof(MapeoClases));

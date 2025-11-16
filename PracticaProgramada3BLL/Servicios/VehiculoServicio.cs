@@ -147,6 +147,40 @@ namespace PracticaProgramada3.BLL.Servicios
 
             return response;
         }
+        public async Task<CustomResponse<bool>> EliminarVehiculo(string placa)
+        {
+            var response = new CustomResponse<bool>();
+
+            try
+            {
+                if (string.IsNullOrWhiteSpace(placa))
+                {
+                    response.EsError = true;
+                    response.Mensaje = "La placa es obligatoria.";
+                    return response;
+                }
+
+                var eliminado = await _vehiculosRepositorio.EliminarVehiculo(placa);
+
+                if (!eliminado)
+                {
+                    response.EsError = true;
+                    response.Mensaje = "No se encontró un vehículo con la placa indicada.";
+                    return response;
+                }
+
+                response.Data = true;
+                response.Mensaje = "Vehículo eliminado correctamente.";
+            }
+            catch (Exception ex)
+            {
+                response.EsError = true;
+                response.Mensaje = $"Ocurrió un error al eliminar el vehículo: {ex.Message}";
+            }
+
+            return response;
+        }
+
     }
 }
 
