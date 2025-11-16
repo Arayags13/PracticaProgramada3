@@ -11,5 +11,8 @@ namespace PracticaProgramada3.DAL.Repositorios
     {
         Task<List<Vehiculo>> ObtenerVehiculos();
         Task<Vehiculo?> ObtenerVehiculoPorPlaca(string placa);
+        Task<Vehiculo> CrearVehiculo(Vehiculo vehiculo);
+        Task<Vehiculo> ActualizarVehiculo(Vehiculo vehiculo);
+
     }
 }

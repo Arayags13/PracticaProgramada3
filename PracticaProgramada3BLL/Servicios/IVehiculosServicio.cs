@@ -11,7 +11,8 @@ namespace PracticaProgramada3.BLL.Servicios
     public interface IVehiculosServicio
     {
         Task<CustomResponse<List<VehiculoDto>>> ObtenerVehiculos();
-
         Task<CustomResponse<VehiculoDto>> ObtenerVehiculoPorPlaca(string placa);
+        Task<CustomResponse<VehiculoDto>> CrearVehiculo(VehiculoDto vehiculo);
+        Task<CustomResponse<VehiculoDto>> ActualizarVehiculo(string placa, VehiculoDto vehiculo);
     }
 }

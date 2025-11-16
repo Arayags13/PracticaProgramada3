@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace PracticaProgramada3.BLL.Servicios
 {
-    public class VehiculoServicio : IVehiculosServicio
+    public class VehiculosServicio : IVehiculosServicio
     {
         private readonly IVehiculosRepositorio _vehiculosRepositorio;
         private readonly IMapper _mapper;
 
-        public VehiculoServicio(IVehiculosRepositorio vehiculosRepositorio, IMapper mapper)
+        public VehiculosServicio(IVehiculosRepositorio vehiculosRepositorio, IMapper mapper)
         {
             _vehiculosRepositorio = vehiculosRepositorio;
             _mapper = mapper;
@@ -23,28 +23,129 @@ namespace PracticaProgramada3.BLL.Servicios
 
         public async Task<CustomResponse<List<VehiculoDto>>> ObtenerVehiculos()
         {
-            var respuesta = new CustomResponse<List<VehiculoDto>>();
-            var vehiculos = await _vehiculosRepositorio.ObtenerVehiculos();
-            respuesta.Data = _mapper.Map<List<VehiculoDto>>(vehiculos);
-            return respuesta;
+            var response = new CustomResponse<List<VehiculoDto>>();
+
+            try
+            {
+                var lista = await _vehiculosRepositorio.ObtenerVehiculos();
+                response.Data = _mapper.Map<List<VehiculoDto>>(lista);
+                response.Mensaje = "Vehículos obtenidos correctamente.";
+            }
+            catch (Exception ex)
+            {
+                response.EsError = true;
+                response.Mensaje = $"Ocurrió un error al obtener los vehículos: {ex.Message}";
+            }
+
+            return response;
         }
 
         public async Task<CustomResponse<VehiculoDto>> ObtenerVehiculoPorPlaca(string placa)
         {
-            var respuesta = new CustomResponse<VehiculoDto>();
-            var vehiculo = await _vehiculosRepositorio.ObtenerVehiculoPorPlaca(placa);
+            var response = new CustomResponse<VehiculoDto>();
 
-            if (vehiculo == null)
+            try
             {
-                respuesta.EsError = true;
-                respuesta.Mensaje = $"Vehículo con placa '{placa}' no encontrado.";
+                var vehiculo = await _vehiculosRepositorio.ObtenerVehiculoPorPlaca(placa);
+
+                if (vehiculo is null)
+                {
+                    response.EsError = true;
+                    response.Mensaje = "No se encontró un vehículo con la placa indicada.";
+                    return response;
+                }
+
+                response.Data = _mapper.Map<VehiculoDto>(vehiculo);
+                response.Mensaje = "Vehículo obtenido correctamente.";
             }
-            else
+            catch (Exception ex)
             {
-                respuesta.Data = _mapper.Map<VehiculoDto>(vehiculo);
+                response.EsError = true;
+                response.Mensaje = $"Ocurrió un error al obtener el vehículo: {ex.Message}";
             }
 
-            return respuesta;
+            return response;
+        }
+
+        public async Task<CustomResponse<VehiculoDto>> CrearVehiculo(VehiculoDto vehiculoDto)
+        {
+            var response = new CustomResponse<VehiculoDto>();
+
+            try
+            {
+                if (vehiculoDto == null)
+                {
+                    response.EsError = true;
+                    response.Mensaje = "La información del vehículo es obligatoria.";
+                    return response;
+                }
+
+                if (string.IsNullOrWhiteSpace(vehiculoDto.Placa))
+                {
+                    response.EsError = true;
+                    response.Mensaje = "La placa es obligatoria.";
+                    return response;
+                }
+
+                var existente = await _vehiculosRepositorio.ObtenerVehiculoPorPlaca(vehiculoDto.Placa);
+                if (existente != null)
+                {
+                    response.EsError = true;
+                    response.Mensaje = "Ya existe un vehículo registrado con esa placa.";
+                    return response;
+                }
+
+                var entidad = _mapper.Map<Vehiculo>(vehiculoDto);
+                var creado = await _vehiculosRepositorio.CrearVehiculo(entidad);
+
+                response.Data = _mapper.Map<VehiculoDto>(creado);
+                response.Mensaje = "Vehículo creado correctamente.";
+            }
+            catch (Exception ex)
+            {
+                response.EsError = true;
+                response.Mensaje = $"Ocurrió un error al crear el vehículo: {ex.Message}";
+            }
+
+            return response;
+        }
+
+        public async Task<CustomResponse<VehiculoDto>> ActualizarVehiculo(string placa, VehiculoDto vehiculoDto)
+        {
+            var response = new CustomResponse<VehiculoDto>();
+
+            try
+            {
+                if (vehiculoDto == null)
+                {
+                    response.EsError = true;
+                    response.Mensaje = "La información del vehículo es obligatoria.";
+                    return response;
+                }
+
+                var entidad = _mapper.Map<Vehiculo>(vehiculoDto);
+
+                entidad.Placa = placa;
+
+                var actualizado = await _vehiculosRepositorio.ActualizarVehiculo(entidad);
+
+                if (actualizado is null)
+                {
+                    response.EsError = true;
+                    response.Mensaje = "No se encontró un vehículo con la placa indicada.";
+                    return response;
+                }
+
+                response.Data = _mapper.Map<VehiculoDto>(actualizado);
+                response.Mensaje = "Vehículo actualizado correctamente.";
+            }
+            catch (Exception ex)
+            {
+                response.EsError = true;
+                response.Mensaje = $"Ocurrió un error al actualizar el vehículo: {ex.Message}";
+            }
+
+            return response;
         }
     }
 }
