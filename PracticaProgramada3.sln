@@ -5,9 +5,9 @@ VisualStudioVersion = 17.14.36127.28 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticaProgramada3", "PracticaProgramada3\PracticaProgramada3.csproj", "{EE8A4DA2-A44E-4DBD-9A87-55D9F8480AEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticaProgramada3BLL", "PracticaProgramada3BLL\PracticaProgramada3BLL.csproj", "{CE376C55-F610-4B34-8C5D-829950E65957}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticaProgramada3.BLL", "PracticaProgramada3BLL\PracticaProgramada3.BLL.csproj", "{CE376C55-F610-4B34-8C5D-829950E65957}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticaProgramada3DAL", "PracticaProgramada3DAL\PracticaProgramada3DAL.csproj", "{0260F333-E84A-4030-8B37-48520EA101FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticaProgramada3.DAL", "PracticaProgramada3DAL\PracticaProgramada3.DAL.csproj", "{0260F333-E84A-4030-8B37-48520EA101FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
