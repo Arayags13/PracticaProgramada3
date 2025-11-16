@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PracticaProgramada3.BLL.Servicios
 {
-    public class VehiculoServicio 
+    public class VehiculoServicio : IVehiculosServicio
     {
         private readonly IVehiculosRepositorio _vehiculosRepositorio;
         private readonly IMapper _mapper;
@@ -21,5 +21,32 @@ namespace PracticaProgramada3.BLL.Servicios
             _mapper = mapper;
         }
 
+        public async Task<CustomResponse<List<VehiculoDto>>> ObtenerVehiculos()
+        {
+            var respuesta = new CustomResponse<List<VehiculoDto>>();
+            var vehiculos = await _vehiculosRepositorio.ObtenerVehiculos();
+            respuesta.Data = _mapper.Map<List<VehiculoDto>>(vehiculos);
+            return respuesta;
+        }
+
+        public async Task<CustomResponse<VehiculoDto>> ObtenerVehiculoPorPlaca(string placa)
+        {
+            var respuesta = new CustomResponse<VehiculoDto>();
+            var vehiculo = await _vehiculosRepositorio.ObtenerVehiculoPorPlaca(placa);
+
+            if (vehiculo == null)
+            {
+                respuesta.EsError = true;
+                respuesta.Mensaje = $"Vehículo con placa '{placa}' no encontrado.";
+            }
+            else
+            {
+                respuesta.Data = _mapper.Map<VehiculoDto>(vehiculo);
+            }
+
+            return respuesta;
+        }
     }
 }
+
+

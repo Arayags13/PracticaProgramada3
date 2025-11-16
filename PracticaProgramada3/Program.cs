@@ -1,3 +1,7 @@
+using PracticaProgramada3.BLL.Mapeos;
+using PracticaProgramada3.BLL.Servicios;
+using PracticaProgramada3.DAL.Repositorios;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IVehiculosServicio, VehiculoServicio>();
+builder.Services.AddScoped<IVehiculosRepositorio, VehiculosRepositorio>();
+
+builder.Services.AddAutoMapper(cfg => { }, typeof(MapeoClases));
 
 var app = builder.Build();
 

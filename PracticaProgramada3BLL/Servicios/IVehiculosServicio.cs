@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace PracticaProgramada3.BLL.Servicios
 {
-    public interface IVehiculosServicios
+    public interface IVehiculosServicio
     {
-        Task<List<Vehiculo>> ObtenerVehiculos();
-        Task<Vehiculo?> ObtenerVehiculoPorPlaca(string placa);
+        Task<CustomResponse<List<VehiculoDto>>> ObtenerVehiculos();
+
+        Task<CustomResponse<VehiculoDto>> ObtenerVehiculoPorPlaca(string placa);
     }
 }
